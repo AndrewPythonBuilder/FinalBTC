@@ -18,6 +18,12 @@ job_queue = updater.job_queue
 
 
 def start (bot, update):
+  if update.message.chat.id == constants.admin or  update.message.chat.id == constants.admin2:
+    bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
+    user_markup = ReplyKeyboardMarkup(bottons)
+    bot.send_message(update.message.from_user.id,
+                         'Доброго времени суток, админ', reply_markup=user_markup)
+  else:
         global flag ,time_you, money, money_1
         time_you = False
         flag = False
