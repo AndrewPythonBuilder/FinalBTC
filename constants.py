@@ -1,4 +1,4 @@
-token = '618192190:AAHE4JzBTutfVKj1oSLfO0gRG18desGVH0U'
+token = '572637496:AAEitWigXlgKarpFgOp_d_wUWVv5RcpYpJo'
 
 hello_text = '''Привет! В данном боте мы предлагаем заключить тебе пари и угадать, куда пойдёт курс Биткоина «вниз» или «вверх».
 
