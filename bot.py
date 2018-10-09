@@ -9,6 +9,8 @@ flag = False
 time_you = False
 money = False
 money_1 = False
+const = False
+const_1 = False
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 updater = Updater(token=constants.token)
@@ -18,13 +20,16 @@ job_queue = updater.job_queue
 
 
 def start (bot, update):
-  if update.message.chat.id == constants.admin or  update.message.chat.id == constants.admin2:
-    bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
-    user_markup = ReplyKeyboardMarkup(bottons)
-    bot.send_message(update.message.from_user.id,
-                         'Доброго времени суток, админ', reply_markup=user_markup)
-  else:
+    if update.message.chat.id == constants.admin or update.message.chat.id == constants.admin2:
+        bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                     'Доброго времени суток, админ', reply_markup=user_markup)
+    else:
         global flag ,time_you, money, money_1
+        link_name = str(update.message.text)[7:]
+        hello = user_com.registration(update.message.chat.id, update.message.chat.first_name, str(update.message.chat.id),
+                                      link_name)
         time_you = False
         flag = False
         money = False
@@ -36,7 +41,7 @@ def start (bot, update):
         bot.send_message(chat_id=update.message.chat_id, text=constants.hello_text, reply_markup=user_markup)
 
 def answer_start(bot, update):
-    global flag, time_you, money, money_1
+    global flag, time_you, money, money_1, const, const_1
     if update.message.text == '💰Пополнить баланс':
         bottons = [['Bitcoin- btc', 'Etherium - eth'],['Yandex Money'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
@@ -58,50 +63,66 @@ def answer_start(bot, update):
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.chat.id, 'Выберете нужную вам пару:', reply_markup= user_markup)
     elif update.message.text == '💸Вывести средства':
-        bottons = [['Bitcoin- btc', 'Etherium - eth'], ['Yandex Money'], ['Назад']]
+        bottons = [['Bitcоin- btc', 'Еtherium - eth'], ['Yаndex Money'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'Выберете нужную вам пару:', reply_markup=user_markup)
+        bot.send_message(update.message.from_user.id, 'Выберите валюту в которой вы хотите вывести средства.', reply_markup=user_markup)
+    elif update.message.text == 'Bitcоin- btc' or update.message.text == 'Еtherium - eth' or update.message.text == 'Yаndex Money':
+        const = True
+        bot.send_message(update.message.chat.id, 'Введите номер кошелька: ')
+    elif const == True:
+        bot.send_message(update.message.chat.id, 'Введите сумму, которую вы желаете вывести. (Минимальная сумма 0,002 btc или  0.05 eth)')
+        const = False
+        const_1 =True
+    elif const_1 == True:
+        const_1 = False
+        try:
+            float(update.message.text)
+            bot.send_message(update.message.chat.id, 'Не хватает денег')
+        except:
+            bot.send_message(update.message.chat.id, 'Что-то пошло не так, попробуйте еще раз')
+        update.message.text = 'Назад'
+        answer_start(bot, update)
     elif  update.message.text == 'BCC/USD':
         money = user_com.parse('BCC')
         constants.valume = 'BCC'
         bottons = [['Вверх📈', 'Вниз📉'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'И тут ещё когда выбрал валюту нужно отредачить слово: Вы можете сделать ставку на то, что  курс БУДЕТ выше или ниже. На данный момент курс BCC: ' + str(
+        bot.send_message(update.message.from_user.id, 'Вы можете сделать ставку на то, что  курс будет выше или ниже. На данный момент курс BCC: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif  update.message.text == 'BTC/USD':
         money = user_com.parse('BTC')
         constants.valume = 'BTC'
         bottons = [['Вверх📈', 'Вниз📉'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'И тут ещё когда выбрал валюту нужно отредачить слово: Вы можете сделать ставку на то, что  курс БУДЕТ выше или ниже. На данный момент курс BTC: ' + str(
+        bot.send_message(update.message.from_user.id, 'Вы можете сделать ставку на то, что  курс будет выше или ниже. На данный момент курс BTC: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif update.message.text == 'ETH/USD':
         money = user_com.parse('ETH')
         constants.valume = 'ETH'
         bottons = [['Вверх📈', 'Вниз📉'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'И тут ещё когда выбрал валюту нужно отредачить слово: Вы можете сделать ставку на то, что  курс БУДЕТ выше или ниже. На данный момент курс ETH: ' + str(
+        bot.send_message(update.message.from_user.id, ' Вы можете сделать ставку на то, что  курс будет выше или ниже. На данный момент курс ETH: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif update.message.text == 'XRP/USD':
         money = user_com.parse('XRP')
         constants.valume = 'XRP'
         bottons = [['Вверх📈', 'Вниз📉'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'И тут ещё когда выбрал валюту нужно отредачить слово: Вы можете сделать ставку на то, что  курс БУДЕТ выше или ниже. На данный момент курс XRP: ' + str(
+        bot.send_message(update.message.from_user.id, 'Вы можете сделать ставку на то, что  курс будет выше или ниже. На данный момент курс XRP: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif update.message.text == 'EOS/USD':
         money = user_com.parse('EOS')
         constants.valume = 'EOS'
         bottons = [['Вверх📈', 'Вниз📉'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'И тут ещё когда выбрал валюту нужно отредачить слово: Вы можете сделать ставку на то, что  курс БУДЕТ выше или ниже. На данный момент курс EOS: ' + str(
+        bot.send_message(update.message.from_user.id, 'Вы можете сделать ставку на то, что  курс будет выше или ниже. На данный момент курс EOS: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif update.message.text == 'LTC/USD':
         money = user_com.parse('LTC')
         constants.valume = 'LTC'
         bottons = [['Вверх📈', 'Вниз📉'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, 'И тут ещё когда выбрал валюту нужно отредачить слово: Вы можете сделать ставку на то, что  курс БУДЕТ выше или ниже. На данный момент курс LTC: ' + str(
+        bot.send_message(update.message.from_user.id, 'Вы можете сделать ставку на то, что  курс будет выше или ниже. На данный момент курс LTC: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif update.message.text == 'Bitcoin- btc':
         bottons = [['Оплатил', 'Отмена']]
@@ -175,16 +196,17 @@ def answer_start(bot, update):
                    ['💸Вывести средства', '💼Мой баланс'],
                    ['🔥Дополнительно']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(chat_id=update.message.chat_id, text = 'Чем могу помочь?', reply_markup=user_markup)
+        bot.send_message(chat_id=update.message.chat_id, text = random.choice(constants.hey_text), reply_markup=user_markup)
     elif update.message.text == 'Рефералы':
         info = user_com.info(update.message.chat.id)
-        bot.send_message(update.message.chat.id, 'За каждого приведенного реферала, который пополнит баланс, вам начислится 0,0005 BTC \n Это ваша реферальная ссылка: http://t.me/testbitcoinkifirbot?start=' + str(info[3]) + ' . \n Ваши рефералы: ' + str(info[5]))
+        bot.send_message(update.message.chat.id, 'За каждого приведенного реферала, который пополнит баланс, вам начислится 0,0005 BTC \n Это ваша реферальная ссылка: http://t.me/Btc_winbot?start=' + str(info[3]) + ' . \n Ваши рефералы: ' + str(info[5]))
     elif update.message.text== 'Задать вопрос':
 
         flag = True
         bot.send_message(update.message.chat.id, 'Напишите ваш вопрос, в ближайшее время на него ответит наш модератор!')
     elif flag == True:
-        print(update.message.text) # Здесь исправить!!!
+        bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
+        bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
         flag = False
         bot.send_message(update.message.chat.id, 'Спасибо')
         update.message.text = 'Назад'
@@ -196,7 +218,7 @@ def answer_start(bot, update):
                 user_com.add_plus(update.message.chat.id, -q)
                 user_com.pay(update.message.chat.id, q)
                 bot.send_message(update.message.chat.id, 'Ставка принята')
-                bot.send_message(constants.admin, str(q)+ str(update.message.chat.id)+ '!!!' )
+                bot.send_message(constants.admin, str(q)+ ' '+ str(update.message.chat.id) )
 
             else:
                 bot.send_message(update.message.chat.id, 'Не хватает денег')
@@ -262,7 +284,6 @@ def answer_start(bot, update):
             info = user_com.info(i)
             try:
                 money_l = user_com.parse(i)
-                print(money_l)
             except:
                 break
             if info[8] == 'less':
@@ -287,8 +308,8 @@ def question(bot,update):
 
 
 def time_now(bot, arg):
-    global flag, time_you, money, money_1
-    time_you = flag =  money_1 =  money = False
+    global flag, time_you, money, money_1,const, const_1
+    time_you = flag =  money_1 =  money = const = const_1 = False
     id_ = user_com.all_id()
     write = user_com.parse('All')
     for j in id_:
