@@ -1,0 +1,5 @@
+python-telegram-bot
+beautifulsoup4
+urllib3
+bs4
+logging
