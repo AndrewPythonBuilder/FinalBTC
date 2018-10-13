@@ -452,8 +452,8 @@ def answer_start(bot, update):
         flag = True
         bot.send_message(update.message.chat.id, 'Напишите ваш вопрос, в ближайшее время на него ответит наш модератор!')
     elif flag == True:
-        bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
-        bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
+        bot.send_message(constants.admin, str(update.message.chat.id)+' Вопрос: ' + update.message.text )
+        bot.send_message(constants.admin2, str(update.message.chat.id)+' Вопрос: ' + update.message.text)
         flag = False
         bot.send_message(update.message.chat.id, 'Спасибо')
         update.message.text = 'Назад'
