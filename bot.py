@@ -25,12 +25,17 @@ job_queue = updater.job_queue
 
 
 def start (bot, update):
-    global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e
-    flag = time_you = money = money_1 = const = const_1 = const_e = const_1_e = False
-    start_one = True
-    bottons = [['Русский🇷🇺', 'English🇺🇸']]
-    user_markup = ReplyKeyboardMarkup(bottons)
-    bot.send_message(update.message.chat.id, 'Здравствуйте, выберите язык:', reply_markup=user_markup)
+    if update.message.chat.id == constants.admin or update.message.chat.id == constants.admin2:
+        bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.chat.id, 'Здравствуйте, админ', reply_markup=user_markup)
+    else:
+        global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e
+        flag = time_you = money = money_1 = const = const_1 = const_e = const_1_e = False
+        start_one = True
+        bottons = [['Русский🇷🇺', 'English🇺🇸']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.chat.id, 'Здравствуйте, выберите язык:', reply_markup=user_markup)
 
 def answer_start(bot, update):
     global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e, flag_e, time_you_e
