@@ -12,11 +12,13 @@ hello_text = '''Привет! В данном боте мы предлагаем
 
 admin = 286077227
 
-admin2 =497221696
+admin2 =168720540
 
 valume = ''
 
 hey_text = ['Чем могу помочь?', "Доброго времени суток!",  "И чем же мы сейчас займемся?", "Здравствуйте!"]
+
+hey_text_e = ['And what are we going to do now?', 'How can I help?', 'Hello!']
 
 kurs = '''Состояние курса монет на данный момент:
 BTC/USD - %s
@@ -27,6 +29,12 @@ EOS/USD - %s
 LTC/USD - %s
 
 Вы можете сделать ставку на то, что будет курс выше или ниже.'''
+
+btc_text_e = '''
+To replenish BTC from an external wallet, use the one-time address below.
+(amount not less than 0,001 BTC)'''
+
+
 
 FAQ = '''-В чем смысл вашего бота?
 -Наш бот  предлагает вам угадать, куда пойдет курс Биткоина, вверх или вниз, другими словами заключить пари. Вы сами выбираете время и пару. 
@@ -78,6 +86,56 @@ FAQ = '''-В чем смысл вашего бота?
 
 Спасибо, что ежедневно участвуете в наших пари!'''
 
+FAQ_2 = '''-What is the meaning of your bot?
+-Our bot offers you to guess where Bitcoin will go, up or down, in other words to make a bet. You choose the time and the pair.
+
+When you have made a deal, when the estimated time comes, and if you correctly guessed the direction of the course, you earn 80% of the profit on the amount of your bet.
+
+
+-Pairs are held every day?
+Yes, the betting is done around the clock, every day.
+
+
+- What is the source of the Bitcoin course?
+-Course is automatically taken from https://coinmarketcap.com/
+
+
+-How to replenish the balance in your bot?
+- Choose the button “Top up the balance”, then select the method of replenishing Bitcoin (BTC), Ethereum (ETH) or POISON (Yandex Money)
+
+Transfer to the specified wallet amount and click Pay.
+As soon as you click on Pay, the system will automatically credit the funds to your balance after the 1st confirmation of the network.
+
+
+-What is the minimum amount of replenishment?
+-For Bitcoin 0.001 BTC. For Ethereum 0.02 ETH.
+For Yandex money 1000 rubles.
+
+
+-What is the minimum wager amount?
+- The minimum bet amount is 0.001 BTC.
+
+
+
+-I filled up the balance of the bot in Ethereum or Yandex Money, do you automatically convert it to Bitcoin?
+-Yes, the balance of the bot is calculated in Bitcoin (BTC). When you replenish the balance in Ethereum (ETH), we will automatically convert it to BTC.
+
+
+-How can I withdraw funds?
+1. Click the "Withdraw" button in the bot
+2. Select Bitcoin (BTC), Ethereum (ETH) or Yandex Money (Yandex Money)
+3. Enter your wallet address
+4. Enter the amount to withdraw.
+
+
+-Do you have a referral system?
+- Yes, we have a referral system. You can find your referral link by clicking the "Advanced" button, then "Referrals".
+
+For each person who clicks your link and makes a deposit, we pay 0.0005 BTC (~ $ 1)
+
+
+Thank you for participating in our bets every day!'''
+
 btc_text = '''Для пополнения BTC с внешнего кошелька используйте одноразовый адрес ниже.
 (сумма не менее 0,001 BTC).
 
@@ -87,6 +145,12 @@ eth_text = '''Для пополнения ETH с внешнего кошельк
 (сумма не менее 0,001 ETH).
 
 После чего средства поступят на ваш кошелёк после 1-го подтверждения сети'''
+
+eth_text_e = '''
+To replenish ETH from an external wallet, use the one-time address below.
+(amount not less than 0,001 ETH).
+
+After that, the funds will go to your wallet after the 1st network confirmation'''
 
 btc_list  = ['39G2uCXzpLHBtrxxvtsczWkG7yFm5NMy8g', '14p8j9J8Lg7AdxvUur35Mk5q268RQYKjcY', '33e5EpZF4SYW1MJUnpucz5yoFmfZX98sKk', '34sSUvbYfBHk9n4gKcqjs9omepysuCqpQR', '1BBh4d8A4C426WD6bfCqmmJwVSCqmvWJpz']
 
