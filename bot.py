@@ -261,7 +261,7 @@ def answer_start(bot, update):
                          'You can bet that the rate will be higher or lower. At the moment the course LTC: ' + str(
                                     money) + '$',  reply_markup=user_markup)
     elif update.message.text == '💸Withdraw funds':
-        bottons = [['Bitcоin- btс', 'Еtherium - еth'], ['Yаndex Mоney'], ['Back']]
+        bottons = [['Bitcоin- btс'], ['Back']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.from_user.id, 'Select the currency in which you want to withdraw funds.', reply_markup=user_markup)
     elif update.message.text == '🤝Bets':
@@ -310,7 +310,7 @@ def answer_start(bot, update):
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.chat.id, 'Выберете нужную вам пару:', reply_markup= user_markup)
     elif update.message.text == '💸Вывести средства':
-        bottons = [['Bitcоin- btc', 'Еtherium - eth'], ['Yаndex Money'], ['Назад']]
+        bottons = [['Bitcоin- btc'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.from_user.id, 'Выберите валюту в которой вы хотите вывести средства.', reply_markup=user_markup)
     elif update.message.text == 'Bitcоin- btc' or update.message.text == 'Еtherium - eth' or update.message.text == 'Yаndex Money':
