@@ -11,6 +11,11 @@ money = False
 money_1 = False
 const = False
 const_1 = False
+start_one = False
+flag_e = False
+time_you_e = False
+const_e = False
+const_1_e = False
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 updater = Updater(token=constants.token)
@@ -20,28 +25,15 @@ job_queue = updater.job_queue
 
 
 def start (bot, update):
-    if update.message.chat.id == constants.admin or update.message.chat.id == constants.admin2:
-        bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
-        user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id,
-                     'Доброго времени суток, админ', reply_markup=user_markup)
-    else:
-        global flag ,time_you, money, money_1
-        link_name = str(update.message.text)[7:]
-        hello = user_com.registration(update.message.chat.id, update.message.chat.first_name, str(update.message.chat.id),
-                                      link_name)
-        time_you = False
-        flag = False
-        money = False
-        money_1 = False
-        bottons = [['💰Пополнить баланс', '🤝Пари'],
-                   ['💸Вывести средства', '💼Мой баланс'],
-                   ['🔥Дополнительно']]
-        user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(chat_id=update.message.chat_id, text=constants.hello_text, reply_markup=user_markup)
+    global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e
+    flag = time_you = money = money_1 = const = const_1 = const_e = const_1_e = False
+    start_one = True
+    bottons = [['Русский🇷🇺', 'English🇺🇸']]
+    user_markup = ReplyKeyboardMarkup(bottons)
+    bot.send_message(update.message.chat.id, 'Здравствуйте, выберите язык:', reply_markup=user_markup)
 
 def answer_start(bot, update):
-    global flag, time_you, money, money_1, const, const_1
+    global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e, flag_e, time_you_e
     if update.message.text == '💰Пополнить баланс':
         bottons = [['Bitcoin- btc', 'Etherium - eth'],['Yandex Money'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
@@ -50,10 +42,245 @@ def answer_start(bot, update):
                          reply_markup=user_markup)
         bot.send_message(constants.admin,
                          str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
-    elif update.message.text == '💼Мой баланс':
+    elif flag_e == True:
+        bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
+        bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
+        flag_e = False
+        bot.send_message(update.message.chat.id, 'Thank you')
+        update.message.text = 'Cancel'
+        answer_start(bot, update)
+    elif update.message.text== 'Ask a Question':
+        flag_e = True
+        bot.send_message(update.message.chat.id, 'Write your question, our moderator will answer it soon!')
+    elif update.message.text == 'Referrals':
+        info = user_com.info(update.message.chat.id)
+        bot.send_message(update.message.chat.id, 'For each given referral that replenishes the balance, you will receive 0.0005 BTC \n This is your referral link: http://t.me/Btc_winbot?start= '+ str (info [3]) +'. \n Your referrals:' + str(info[5]))
+    elif update.message.text == '💰Add balance':
+        bottons = [['Вitcoin- btс', 'Еthеrium - еth'],['Yandex Money'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.chat.id, ' Select replenishment method⬇️')
+        bot.send_message(update.message.chat.id, 'Any of the replenishment methods will be automatically converted to BTC.',
+                         reply_markup=user_markup)
+        bot.send_message(constants.admin,
+                         str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
+    elif update.message.text == 'English🇺🇸':
+        if start_one == True:
+            start_one = False
+            link_name = str(update.message.text)[7:]
+            hello = user_com.registration(update.message.chat.id, update.message.chat.first_name,
+                                          str(update.message.chat.id),
+                                          link_name)
+            bottons = [['💰Add balance', '🤝Bets'],
+                       ['💸Withdraw funds', '💼My balance'],
+                       ['🔥Additionally']]
+            user_markup = ReplyKeyboardMarkup(bottons)
+            bot.send_message(chat_id=update.message.chat_id, text = 'Hi, let\'s get it started', reply_markup=user_markup)
+    elif update.message.text == 'FАQ':
+        bot.send_message(update.message.chat.id, constants.FAQ_2)
+    elif update.message.text == 'Bitcоin- btс' or update.message.text == 'Еtherium - еth' or update.message.text == 'Yаndex Mоney':
+        const_e = True
+        bot.send_message(update.message.chat.id, 'Enter your wallet number: ')
+    elif const_e == True:
+        bot.send_message(update.message.chat.id, 'Enter the amount you want to withdraw. (The minimum amount is 0.002 btc or 0.05 eth)')
+        const_e = False
+        const_1_e =True
+    elif const_1_e == True:
+        const_1_e = False
+        try:
+            float(update.message.text)
+            bot.send_message(update.message.chat.id, 'There is not enough money on the account. Enter the amount again.')
+        except:
+            bot.send_message(update.message.chat.id, 'Something went wrong, try again')
+        update.message.text = 'Back'
+        answer_start(bot, update)
+    elif update.message.text == 'Cancel': #Изменить приветствие
+        flag = False
+        time_you = False
+        money = False
+        money_1 = False
+        bottons = [['💰Add balance', '🤝Bets'],
+                   ['💸Withdraw funds', '💼My balance'],
+                   ['🔥Additionally']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(chat_id=update.message.chat_id, text = random.choice(constants.hey_text_e), reply_markup=user_markup)
+    elif update.message.text == 'Higher📈':
+        try:
+            money = float(user_com.parse(constants.valume))
+            user_com.more_less(update.message.from_user.id, 'more', money, constants.valume)
+        except:
+            pass
+        bottons = [['1 hour', '2 hours', '4 hours'], ['6 hours', '12 hours', '24 hours'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'Select the time you need:', reply_markup=user_markup)
+    elif update.message.text == 'Lower📉':
+        try:
+            money = float(user_com.parse(constants.valume))
+            user_com.more_less(update.message.from_user.id, 'less', money, constants.valume)
+        except:
+            pass
+        bottons = [['1 hour', '2 hours', '4 hours'], ['6 hours', '12 hours', '24 hours'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'Select the time you need:', reply_markup=user_markup)
+    elif update.message.text == '1 hour':
+        time_you_e = True
+        user_com.set_alarm(1, update.message.from_user.id)
+        bottons = [['Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'How much do you bet?', reply_markup=user_markup)
+    elif update.message.text == '2 hours':
+        time_you_e = True
+        user_com.set_alarm(2, update.message.from_user.id)
+        bottons = [['Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'How much do you bet?', reply_markup=user_markup)
+    elif update.message.text == '4 hours':
+        time_you_e = True
+        user_com.set_alarm(4, update.message.from_user.id)
+        bottons = [['Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'How much do you bet?', reply_markup=user_markup)
+    elif update.message.text == '6 hours':
+        time_you_e = True
+        user_com.set_alarm(6, update.message.from_user.id)
+        bottons = [['Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'How much do you bet?', reply_markup=user_markup)
+    elif update.message.text == '12 hours':
+        time_you_e = True
+        user_com.set_alarm(12, update.message.from_user.id)
+        bottons = [['Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'How much do you bet?', reply_markup=user_markup)
+    elif update.message.text == '24 hours':
+        time_you_e = True
+        user_com.set_alarm(23, update.message.from_user.id)
+        bottons = [['Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'How much do you bet?', reply_markup=user_markup)
+    elif time_you_e == True:
+        try:
+            q = float(update.message.text)
+            if  q <= user_com.info(update.message.chat.id)[2]:
+                user_com.add_plus(update.message.chat.id, -q)
+                user_com.pay(update.message.chat.id, q)
+                bot.send_message(update.message.chat.id, 'Bet accepted')
+                bot.send_message(constants.admin, str(q)+ ' '+ str(update.message.chat.id) )
+
+            else:
+                bot.send_message(update.message.chat.id, 'Not enough money')
+            time_you_e = False
+            update.message.text = 'Cancel'
+            answer_start(bot, update)
+
+        except:
+            time_you_e = False
+            bot.send_message(update.message.chat.id, 'Something went wrong')
+            update.message.text = 'Cancel'
+            answer_start(bot, update)
+    elif update.message.text == 'Вitcoin- btс':
+        bottons = [['Paid for', 'Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         constants.btc_text_e + '\n' + str(random.choice(constants.btc_list)), reply_markup=user_markup)
+    elif update.message.text == 'Paid for':
+        bot.send_message(update.message.chat.id, 'Payment is accepted, your transaction is being processed, the funds will be credited to your account automatically after the 1st confirmation of the network.')
+        update.message.text = 'Cancel'
+        answer_start(bot, update)
+    elif update.message.text == 'Back':
+        update.message.text = 'Cancel'
+        answer_start(bot, update)
+    elif update.message.text == 'Еthеrium - еth':
+        bottons = [['Paid for', 'Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         constants.eth_text_e + '\n' + str(random.choice(constants.eth_list)), reply_markup= user_markup)
+    elif  update.message.text == 'BTС/USD':
+        money = user_com.parse('BTC')
+        constants.valume = 'BTC'
+        bottons = [['Higher📈', 'Lower📉'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'You can bet that the rate will be higher or lower. At the moment the course BTC: ' + str(
+                                    money) + '$',  reply_markup=user_markup)
+    elif  update.message.text == 'BCС/USD':
+        money = user_com.parse('BCC')
+        constants.valume = 'BCC'
+        bottons = [['Higher📈', 'Lower📉'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'You can bet that the rate will be higher or lower. At the moment the course BCC: ' + str(
+                                    money) + '$',  reply_markup=user_markup)
+    elif update.message.text == 'ETН/USD':
+        money = user_com.parse('ETH')
+        constants.valume = 'ETH'
+        bottons = [['Higher📈', 'Lower📉'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         'You can bet that the rate will be higher or lower. At the moment the course ETH: ' + str(
+                                    money) + '$',  reply_markup=user_markup)
+    elif update.message.text == 'XRР/USD':
+        money = user_com.parse('XRP')
+        constants.valume = 'XRP'
+        bottons = [['Higher📈', 'Lower📉'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         'You can bet that the rate will be higher or lower. At the moment the course XRP: ' + str(
+                                    money) + '$',  reply_markup=user_markup)
+    elif update.message.text == 'EОS/USD':
+        money = user_com.parse('EOS')
+        constants.valume = 'EOS'
+        bottons = [['Higher📈', 'Lower📉'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         'You can bet that the rate will be higher or lower. At the moment the course EOS: ' + str(
+                                    money) + '$',  reply_markup=user_markup)
+    elif update.message.text == 'LTС/USD':
+        money = user_com.parse('LTC')
+        constants.valume = 'LTC'
+        bottons = [['Higher📈', 'Lower📉'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         'You can bet that the rate will be higher or lower. At the moment the course LTC: ' + str(
+                                    money) + '$',  reply_markup=user_markup)
+    elif update.message.text == '💸Withdraw funds':
+        bottons = [['Bitcоin- btс', 'Еtherium - еth'], ['Yаndex Mоney'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, 'Select the currency in which you want to withdraw funds.', reply_markup=user_markup)
+    elif update.message.text == '🤝Bets':
+        bottons = [['BTС/USD', 'ETН/USD'], ['XRР/USD', 'BCС/USD'], ['EОS/USD', 'LTС/USD'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.chat.id, 'Choose the pair you need: ', reply_markup= user_markup)
+    elif update.message.text == '🔥Additionally':
+        bottons = [['Ask a Question', 'Referrals'], ['FАQ'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id, '🔥Additionally', reply_markup=user_markup)
+    elif update.message.text == '💼My balance':
+        bottons = [['💰Add balance', '💸Withdraw funds'], ['Back']]
+        user_markup = ReplyKeyboardMarkup(bottons)
         id_ = update.message.chat.id
         s = str(user_com.info(id_)[2])
-        bot.send_message(update.message.chat.id, 'Ваш баланс ' + s + ' ВТС')
+        bot.send_message(update.message.chat.id, 'Your balance: ' + s + ' ВТС', reply_markup= user_markup)
+    elif update.message.text == 'Русский🇷🇺':
+        if update.message.chat.id == constants.admin or update.message.chat.id == constants.admin2:
+            bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
+            user_markup = ReplyKeyboardMarkup(bottons)
+            bot.send_message(update.message.from_user.id,
+                             'Доброго времени суток, админ', reply_markup=user_markup)
+        elif start_one == True:
+            start_one = False
+            link_name = str(update.message.text)[7:]
+            hello = user_com.registration(update.message.chat.id, update.message.chat.first_name,
+                                          str(update.message.chat.id),
+                                          link_name)
+            bottons = [['💰Пополнить баланс', '🤝Пари'],
+                       ['💸Вывести средства', '💼Мой баланс'],
+                       ['🔥Дополнительно']]
+            user_markup = ReplyKeyboardMarkup(bottons)
+            bot.send_message(chat_id=update.message.chat_id, text=constants.hello_text, reply_markup=user_markup)
+    elif update.message.text == '💼Мой баланс':
+        bottons = [['💰Пополнить баланс', '💸Вывести средства'], ['Назад']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        id_ = update.message.chat.id
+        s = str(user_com.info(id_)[2])
+        bot.send_message(update.message.chat.id, 'Ваш баланс ' + s + ' ВТС', reply_markup=user_markup)
     elif update.message.text == '🔥Дополнительно':
         bottons = [['Задать вопрос', 'Рефералы'], ['FAQ'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
