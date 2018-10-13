@@ -465,7 +465,7 @@ def answer_start(bot, update):
             answer_start(bot, update)
     elif update.message.text == 'Закинуть деньги' and (update.message.chat.id == constants.admin or update.message.chat.id == constants.admin2 ):
         bot.send_message(update.message.chat.id, 'Какую сумму вы хотите закинуть? и какой id у пользователя?')
-        bot.send_message(update.message.chat.id, 'Сначала вы пишите id человека, которому вы хотите закинуть денег, потом, через пробел сколько денег.')
+        bot.send_message(update.message.chat.id, 'Сначала вы пишите сколько вы хотите закинуть денег, потом, ID.')
         bot.send_message(update.message.chat.id, 'Например')
         bot.send_message(update.message.chat.id, '286077227 123')
         bot.send_message(update.message.chat.id, 'Теперь у человека id  которого 286077227  на счете 123 BTC')
