@@ -143,12 +143,13 @@ btc_text = '''Для пополнения BTC с внешнего кошельк
 
 После чего средства поступят на ваш кошелёк после 1-го подтверждения сети'''
 
-ya_text_e = '''To replenish the RUB from an external wallet, use the one-time address below.
+ya_text_e = '''
+To replenish Yandex Money use the one-time address below.
 (amount not less than 499 RUB).
 
 After that, the funds will go to your wallet after the 1st network confirmation'''
 
-ya_text = '''Для пополнения РУБ с внешнего кошелька используйте одноразовый адрес ниже.
+ya_text = '''Для пополнения Яндек Денег используйте одноразовый адрес ниже.
 (сумма не менее 499 РУБ).
 
 После чего средства поступят на ваш кошелёк после 1-го подтверждения сети'''
