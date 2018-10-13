@@ -40,7 +40,7 @@ def start (bot, update):
 def answer_start(bot, update):
     global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e, flag_e, time_you_e
     if update.message.text == '💰Пополнить баланс':
-        bottons = [['Bitcoin- btc', 'Etherium - eth'],['Yаndex Money'], ['Назад']]
+        bottons = [['Bitcoin- btc', 'Etherium - eth'],['Yаndex Monеy'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.chat.id, ' Выберите метод пополнения⬇️')
         bot.send_message(update.message.chat.id, 'Любой из методов пополнения будет автоматичекси конвертирован в BTC.',
@@ -49,7 +49,7 @@ def answer_start(bot, update):
                          str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
         bot.send_message(constants.admin2,
                          str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
-    elif update.message.text == 'Yаndex Money':
+    elif update.message.text == 'Yаndex Monеy':
         bottons = [['Оплатил', 'Отмена']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.from_user.id,
