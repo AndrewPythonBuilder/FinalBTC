@@ -40,13 +40,26 @@ def start (bot, update):
 def answer_start(bot, update):
     global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e, flag_e, time_you_e
     if update.message.text == '💰Пополнить баланс':
-        bottons = [['Bitcoin- btc', 'Etherium - eth'],['Yandex Money'], ['Назад']]
+        bottons = [['Bitcoin- btc', 'Etherium - eth'],['Yаndex Money'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.chat.id, ' Выберите метод пополнения⬇️')
         bot.send_message(update.message.chat.id, 'Любой из методов пополнения будет автоматичекси конвертирован в BTC.',
                          reply_markup=user_markup)
         bot.send_message(constants.admin,
                          str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
+        bot.send_message(constants.admin2,
+                         str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
+    elif update.message.text == 'Yаndex Money':
+        bottons = [['Оплатил', 'Отмена']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         constants.ya_text + '\n' + str(random.choice(constants.yandex_pay)), reply_markup=user_markup)
+    elif update.message.text == 'Yandex Mоney':
+        bottons = [['Paid for', 'Cancel']]
+        user_markup = ReplyKeyboardMarkup(bottons)
+        bot.send_message(update.message.from_user.id,
+                         constants.ya_text_e + '\n' + str(random.choice(constants.yandex_pay)),
+                         reply_markup=user_markup)
     elif flag_e == True:
         bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
         bot.send_message(constants.admin, 'Вопрос: ' + update.message.text)
@@ -61,12 +74,14 @@ def answer_start(bot, update):
         info = user_com.info(update.message.chat.id)
         bot.send_message(update.message.chat.id, 'For each given referral that replenishes the balance, you will receive 0.0005 BTC \n This is your referral link: http://t.me/Btc_winbot?start= '+ str (info [3]) +'. \n Your referrals:' + str(info[5]))
     elif update.message.text == '💰Add balance':
-        bottons = [['Вitcoin- btс', 'Еthеrium - еth'],['Yandex Money'], ['Back']]
+        bottons = [['Вitcoin- btс', 'Еthеrium - еth'],['Yandex Mоney'], ['Back']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.chat.id, ' Select replenishment method⬇️')
         bot.send_message(update.message.chat.id, 'Any of the replenishment methods will be automatically converted to BTC.',
                          reply_markup=user_markup)
         bot.send_message(constants.admin,
+                         str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
+        bot.send_message(constants.admin2,
                          str(update.message.chat.id) + ' это id человека, который нажал "Пополнить баланс"')
     elif update.message.text == 'English🇺🇸':
         if start_one == True:
@@ -256,7 +271,7 @@ def answer_start(bot, update):
     elif update.message.text == '🔥Additionally':
         bottons = [['Ask a Question', 'Referrals'], ['FАQ'], ['Back']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, '🔥Additionally', reply_markup=user_markup)
+        bot.send_message(update.message.from_user.id, '🔥Additionally help @btc_supp', reply_markup=user_markup)
     elif update.message.text == '💼My balance':
         bottons = [['💰Add balance', '💸Withdraw funds'], ['Back']]
         user_markup = ReplyKeyboardMarkup(bottons)
@@ -289,7 +304,7 @@ def answer_start(bot, update):
     elif update.message.text == '🔥Дополнительно':
         bottons = [['Задать вопрос', 'Рефералы'], ['FAQ'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
-        bot.send_message(update.message.from_user.id, '🔥Дополнительно', reply_markup=user_markup)
+        bot.send_message(update.message.from_user.id, '🔥Дополнительно, поддержка @btc_supp', reply_markup=user_markup)
     elif update.message.text == '🤝Пари':
         bottons = [['BTC/USD', 'ETH/USD'], ['XRP/USD', 'BCC/USD'], ['EOS/USD', 'LTC/USD'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
