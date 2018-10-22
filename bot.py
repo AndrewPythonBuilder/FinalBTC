@@ -33,6 +33,10 @@ def start (bot, update):
         global flag, time_you, money, money_1, const, const_1, start_one, const_e, const_1_e
         flag = time_you = money = money_1 = const = const_1 = const_e = const_1_e = False
         start_one = True
+        link_name = str(update.message.text)[7:]
+        hello = user_com.registration(update.message.chat.id, update.message.chat.first_name,
+                                      str(update.message.chat.id),
+                                      link_name)
         bottons = [['Русский🇷🇺', 'English🇺🇸']]
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.chat.id, 'Здравствуйте, выберите язык:', reply_markup=user_markup)
@@ -86,10 +90,6 @@ def answer_start(bot, update):
     elif update.message.text == 'English🇺🇸':
         if start_one == True:
             start_one = False
-            link_name = str(update.message.text)[7:]
-            hello = user_com.registration(update.message.chat.id, update.message.chat.first_name,
-                                          str(update.message.chat.id),
-                                          link_name)
             bottons = [['💰Add balance', '🤝Bets'],
                        ['💸Withdraw funds', '💼My balance'],
                        ['🔥Additionally']]
@@ -273,11 +273,13 @@ def answer_start(bot, update):
         user_markup = ReplyKeyboardMarkup(bottons)
         bot.send_message(update.message.from_user.id, '🔥Additionally help @btc_supp', reply_markup=user_markup)
     elif update.message.text == '💼My balance':
-        bottons = [['💰Add balance', '💸Withdraw funds'], ['Back']]
+        bottons = [['💰Add balance', '💸Withdraw funds'], ['Bets history','Back']]
         user_markup = ReplyKeyboardMarkup(bottons)
         id_ = update.message.chat.id
         s = str(user_com.info(id_)[2])
         bot.send_message(update.message.chat.id, 'Your balance: ' + s + ' ВТС', reply_markup= user_markup)
+    elif update.message.text == 'Bets history':
+        bot.send_message(update.message.chat.id, "You don't have any orders")
     elif update.message.text == 'Русский🇷🇺':
         if update.message.chat.id == constants.admin or update.message.chat.id == constants.admin2:
             bottons = [['Закинуть деньги', 'Прибавить деньги игроку']]
@@ -296,11 +298,13 @@ def answer_start(bot, update):
             user_markup = ReplyKeyboardMarkup(bottons)
             bot.send_message(chat_id=update.message.chat_id, text=constants.hello_text, reply_markup=user_markup)
     elif update.message.text == '💼Мой баланс':
-        bottons = [['💰Пополнить баланс', '💸Вывести средства'], ['Назад']]
+        bottons = [['💰Пополнить баланс', '💸Вывести средства'], ['История ставок','Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
         id_ = update.message.chat.id
         s = str(user_com.info(id_)[2])
         bot.send_message(update.message.chat.id, 'Ваш баланс ' + s + ' ВТС', reply_markup=user_markup)
+    elif update.message.text == 'История ставок':
+        bot.send_message(update.message.chat.id, 'У вас нет ставок. Пополните баланс')
     elif update.message.text == '🔥Дополнительно':
         bottons = [['Задать вопрос', 'Рефералы'], ['FAQ'], ['Назад']]
         user_markup = ReplyKeyboardMarkup(bottons)
